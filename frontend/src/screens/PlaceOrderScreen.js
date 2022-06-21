@@ -32,10 +32,14 @@ export default function PlaceOrderScreen(props) {
     e.preventDefault();
     if (cupom.id) {
       dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, cart.itemsPrice, (cart.totalPrice - cupom.valorCupom), cart.taxPrice, userInfo.token, cupom.id));
-      props.history.push('/orders');
+      setTimeout(function () {
+        props.history.push('/thanks');
+      }, 8000)
     } else {
       dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, cart.itemsPrice, cart.totalPrice, cart.taxPrice, userInfo.token));
-      props.history.push('/orders');
+      setTimeout(function () {
+        props.history.push('/thanks');
+      }, 8000)
     }
 
   };

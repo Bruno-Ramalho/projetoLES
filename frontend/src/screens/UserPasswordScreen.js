@@ -22,6 +22,7 @@ export default function UserPasswordScreen(props) {
       alert('A senha e a confirmação da senha estão diferentes');
     } else {
       dispatch(userPasswordUpdate(userInfo.id, password, token));
+      props.history.push('/');
     }
   };
 

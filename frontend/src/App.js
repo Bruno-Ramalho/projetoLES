@@ -27,6 +27,7 @@ import AdminManageUserScreen from './screens/AdminManageUserScreen';
 import UserCuponsScreen from './screens/UserCuponsScreen';
 import SavedCupomScreen from './screens/SavedCupomScreen';
 import AdminChartScreen from './screens/AdminChartScreen';
+import OrderThanksScreen from './screens/OrderThanksSrceen';
 
 function App() {
 
@@ -119,6 +120,7 @@ function App() {
                     <Route path="/adm/orders" component={AdminManageOrderScreen}></Route>
                     <Route path="/" component={HomeScreen} exact></Route>
                     <Route path="/Adminchart" component={AdminChartScreen} exact></Route>
+                    <Route path="/thanks" component={OrderThanksScreen} exact></Route>
                 </main>
                 <footer className="row center">Cria Software<span>&reg;</span></footer>
             </div>

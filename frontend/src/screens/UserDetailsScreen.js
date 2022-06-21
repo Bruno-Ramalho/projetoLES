@@ -26,6 +26,7 @@ export default function UserDetailsScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(userUpdate(userInfo.id, name, dtNasc, genero, cpf, tipoTel, tel, email, token));
+    props.history.push('/');
   };
 
   return (

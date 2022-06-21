@@ -70,8 +70,6 @@ export const createOrder = (shippingAddressId, payCardId, cartItems, userId, ite
         },
       });
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
-
-    dispatch(createDetailsOrder(cartItems[0].id, cartItems[0].qty, token));
     //dispatch({ type: CART_EMPTY });
     //localStorage.removeItem('cartItems');
     if (cupomId) {
@@ -92,12 +90,15 @@ export const createOrder = (shippingAddressId, payCardId, cartItems, userId, ite
   }
 };
 
-export const createDetailsOrder = (prodId, qty, token) => async (dispatch) => {
+export const createDetailsOrder = (prodId, qty, pedidoId, token) => async (dispatch) => {
   dispatch({
     type: ORDER_DETAILS_CREATE_REQUEST,
     payload: {
       produto: {
-        prodId
+        id: prodId
+      },
+      pedido: {
+        id: pedidoId
       },
       quantity: qty
     }
@@ -105,9 +106,12 @@ export const createDetailsOrder = (prodId, qty, token) => async (dispatch) => {
   try {
     const { data } = await Axios.post('/api/orderDetails/cadastrar', {
       produto: {
-        prodId
+        id: prodId
       },
-      quantity: qty
+      quantity: qty,
+      pedido: {
+        id: pedidoId
+      }
     }
       , {
         headers: {
@@ -123,7 +127,6 @@ export const createDetailsOrder = (prodId, qty, token) => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
-
   }
 }
 
@@ -215,6 +218,7 @@ export const detailsOrder = (orderId, token) => async (dispatch) => {
         }
       }
     );
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
       quantidade[i] = data[i].quantity;
       produtos[i] = data[i].produto;

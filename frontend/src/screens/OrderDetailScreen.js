@@ -103,7 +103,10 @@ export default function OrderDetailScreen(props) {
                 <div className="card card-body">
                   <h2>Pagamento</h2>
                   <p>
-
+                    <strong>Nome do Titular: </strong> {order[1][0].cartao.cardHolderName}<br />
+                    <strong>Data de Vencimento: </strong> {order[1][0].cartao.dueData}<br />
+                    <strong>Bandeira: </strong> {order[1][0].cartao.bandeira}<br />
+                    <strong>Número do cartão: </strong> {order[1][0].cartao.number}
                   </p>
                 </div>
               </li>
