@@ -6,14 +6,18 @@ import { userActiveAction, userInactiveAction } from '../../actions/userActions'
 export default function User(props) {
   const { user, admin, token } = props;
 
+  let history = useHistory();
+
   const dispatch = useDispatch();
-  console.log(user.ativo)
+
   const inactiveUserHandler = () => {
     dispatch(userInactiveAction(admin, user.id, token));
+    history.push("/admin");
   }
 
   const activeUserHandler = () => {
     dispatch(userActiveAction(admin, user.id, token));
+    history.push("/admin");
   }
 
   return (
@@ -26,7 +30,7 @@ export default function User(props) {
           user.ativo ? (
             <div className="price">Status: Ativo</div>
           ) : (
-            <></>
+            <div className="price">Status: Inativo</div>
           )
         }
         <button onClick={activeUserHandler}>Ativar</button>

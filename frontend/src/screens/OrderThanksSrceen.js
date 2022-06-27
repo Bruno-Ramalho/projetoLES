@@ -50,7 +50,7 @@ export default function OrderThanksScreen(props) {
           {
             setTimeout(function () {
               props.history.push('/orders');
-            }, 8000)
+            }, 4000)
           }
         </div>
       )}

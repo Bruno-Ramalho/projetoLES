@@ -38,17 +38,20 @@ export const signin = (username, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_SIGNIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: "Email ou Senha incorreta(s)"
+      /* error.response && error.response.data.message
+         ? error.response.data.message
+         : error.message,*/
     });
   }
 };
 export const signout = () => (dispatch) => {
+  /*
   localStorage.removeItem('userInfo');
   localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
+  */
+  localStorage.clear();
   dispatch({ type: USER_SIGNOUT })
 }
 

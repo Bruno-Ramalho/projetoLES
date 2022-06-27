@@ -31,15 +31,15 @@ export default function PlaceOrderScreen(props) {
   const placeOrderHandler = (e) => {
     e.preventDefault();
     if (cupom.id) {
-      dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, cart.itemsPrice, (cart.totalPrice - cupom.valorCupom), cart.taxPrice, userInfo.token, cupom.id));
+      dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, (cart.totalPrice - cupom.valorCupom), cart.taxPrice, userInfo.token, cupom.id));
       setTimeout(function () {
         props.history.push('/thanks');
-      }, 8000)
+      }, 4000)
     } else {
-      dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, cart.itemsPrice, cart.totalPrice, cart.taxPrice, userInfo.token));
+      dispatch(createOrder(cart.shippingAddress.id, cart.paymentMethod.id, cart.cartItems, userInfo.id, cart.totalPrice, cart.taxPrice, userInfo.token));
       setTimeout(function () {
         props.history.push('/thanks');
-      }, 8000)
+      }, 4000)
     }
 
   };

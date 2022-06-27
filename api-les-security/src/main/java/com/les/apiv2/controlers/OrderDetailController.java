@@ -30,11 +30,11 @@ public class OrderDetailController {
 		return new ResponseEntity<OrderDetail>(this.service.save(orderDetail),HttpStatus.CREATED);
 	}
 	
-//	@GetMapping(value = "/graph")
-//	public ResponseEntity<List<OrderDetail>> graph(){
-//		List<OrderDetail> od = service.graph();
-//		return ResponseEntity.ok(od);
-//	}
+	@GetMapping(value = "/graph")
+	public ResponseEntity<List<OrderDetail>> graph(){
+		List<OrderDetail> od = service.graph();
+		return ResponseEntity.ok(od);
+	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<OrderDetail> findOne(@PathVariable("id") Integer id){

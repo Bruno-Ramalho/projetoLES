@@ -28,7 +28,7 @@ public class PedidoService {
 	
 	@Transactional
 	public PedidoDTO insert(PedidoDTO dto) {
-	Pedido pedido = new Pedido(null, OrderStatus.PENDENTE, dto.getEndereco(), dto.getUsuario(), dto.getCartao(), dto.getTotalPrice(),dto.getTaxPrice(), dto.getOrderDetails());
+	Pedido pedido = new Pedido(null, OrderStatus.PENDENTE, dto.getEndereco(), dto.getUsuario(), dto.getCartao(), dto.getTaxPrice(),dto.getTotalPrice(), dto.getOrderDetails());
 		
 	for(OrderDetail od : dto.getOrderDetails()) {
 		Optional<OrderDetail> orderDetail = orderRepository.findById(od.getId());

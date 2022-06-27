@@ -33,7 +33,7 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataPedido = new Date();
 	private OrderStatus status = OrderStatus.PENDENTE;

@@ -25,7 +25,7 @@ import {
 import { createCupom, inactiveCupom } from './cupomActions';
 
 
-export const createOrder = (shippingAddressId, payCardId, cartItems, userId, itemsPrice, totalPrice, taxPrice, token, cupomId) => async (dispatch) => {
+export const createOrder = (shippingAddressId, payCardId, cartItems, userId, totalPrice, taxPrice, token, cupomId) => async (dispatch) => {
   dispatch({
     type: ORDER_CREATE_REQUEST,
     payload: {
@@ -41,9 +41,8 @@ export const createOrder = (shippingAddressId, payCardId, cartItems, userId, ite
         id: shippingAddressId
       },
       produtos: cartItems,
-      taxPrice,
       totalPrice,
-      itemsPrice
+      taxPrice
     }
   });
   try {
@@ -60,9 +59,9 @@ export const createOrder = (shippingAddressId, payCardId, cartItems, userId, ite
         id: shippingAddressId
       },
       produtos: cartItems,
-      taxPrice,
       totalPrice,
-      itemsPrice
+      taxPrice
+
     }
       , {
         headers: {
@@ -179,6 +178,11 @@ export const listOrder = (admin, token) => async (dispatch) => {
 }
 
 export const graphOrder = (admin, token) => async (dispatch) => {
+  let info = [];
+  let last = [];
+  let copy = [];
+  let aux = [];
+  let change = false;
   if (admin === true) {
     dispatch({ type: ORDER_GRAPH_REQUEST, payload: admin });
     try {
@@ -187,10 +191,65 @@ export const graphOrder = (admin, token) => async (dispatch) => {
           headers: {
             authorization: `Bearer ${token}`
           }
-        });
-      dispatch({ type: ORDER_GRAPH_SUCCESS, payload: data });
-    }
-    catch (error) {
+        }
+      );
+      // Fazer um MAP por categoria de produto
+      // Depois Colapsar dados com datas iguais
+      if (change === false) {
+        info.push(data.map((od) => {
+          if (od.produto.category === "Shirts") {
+            return [od.pedido.dataPedido, od.quantity, 0]
+          }
+          if (od.produto.category === "Pants") {
+            return [od.pedido.dataPedido, 0, od.quantity]
+          }
+        }));
+        change = true
+        info[0].unshift(["Data", "Shirt", "Pants"])
+      }
+
+
+      last.push(info[0][0])
+      copy.push(info[0]);
+      change = false;
+
+
+      for (var i = 1; i < info[0].length; i++) {
+        last.push(info[0][i]);
+        //console.log(last)
+        for (var j = 2; j < info[0].length; j++) {
+          if (info[0][i][0] === 0) {
+          } else {
+            if (info[0][i][0] === info[0][j][0]) {
+              if (info[0][i][1] === 0) {
+                last[i][0] = info[0][i]
+                last[i][1] = last[0][i][1] + info[0][j][1];
+                info[0][j][0] = 0;
+                //console.log(info[0][j]);
+              } else {
+                last[i][1] = last[0][i][2] + info[0][j][2];
+                info[0][j][0] = 0;
+                //console.log(info[0][j])
+              }
+            }
+          }
+        }
+      };
+
+      /*
+      last.push(info[0].map(function (od) {
+        for (var i = 1; i < copy[0].length; i++) {
+          if (od[0] === copy[0][i][0]) {
+            aux.push([od[0], od[1] + copy[0][i][1], od[2] + copy[0][i][2]])
+            copy[0][i][0] = 0
+          }
+        }
+        return aux
+      }))
+      */
+      console.log(last)
+      dispatch({ type: ORDER_GRAPH_SUCCESS, payload: last });
+    } catch (error) {
       dispatch({
         type: ORDER_GRAPH_FAIL,
         payload:
@@ -218,7 +277,7 @@ export const detailsOrder = (orderId, token) => async (dispatch) => {
         }
       }
     );
-    console.log(data);
+
     for (var i = 0; i < data.length; i++) {
       quantidade[i] = data[i].quantity;
       produtos[i] = data[i].produto;

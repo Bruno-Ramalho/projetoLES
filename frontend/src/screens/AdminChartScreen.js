@@ -15,36 +15,32 @@ export default function AdminChartScreen(props) {
   const { userInfo } = userSignin;
   const token = userInfo.token;
 
-  const data = [['Year', 'Sales', 'Expenses'], ['2004', 1000, 400], ['2005', 1170, 460], ['2006', 660, 1120], ['2007', 1030, 540]];
   const orderGraph = useSelector((state) => state.orderGraph);
   const { order, loading, error } = orderGraph;
 
-  const info = [];
-
+  const [data, setData] = useState('')
   const [dtSt, setDtSt] = useState('');
   const [dtEn, setDtEn] = useState('');
   const [show, setShow] = useState(true);
 
   const submitHandler = () => {
     console.log(order)
-    for (var i = 0; i < order.length; i++) {
-      info[0] = order[i].produto.category;
-      info[1] = order[i].pedido.dataPedido;
-      info[2] = order[i].quantity;
-      data.push(info);
-    };
   };
-
 
   const options = {
     title: "Graph",
   };
 
   useEffect(() => {
-    dispatch(graphOrder(userInfo.admin, token))
+    dispatch(graphOrder(userInfo.admin, token));
   }, [dispatch, userInfo.admin, token])
 
-
+  useEffect(() => {
+    if (loading === false) {
+      setData(order[0]);
+      console.log(data)
+    }
+  }, [order, loading, data])
   return (
     <div>
       {loading ? (

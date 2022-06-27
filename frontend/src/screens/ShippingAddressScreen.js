@@ -14,7 +14,6 @@ export default function ShippingAddressScreen(props) {
     props.history.push('/signin');
   };
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName);
   const [apelido, setApelido] = useState(shippingAddress.apelido);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
@@ -30,7 +29,7 @@ export default function ShippingAddressScreen(props) {
   const submitHandler = (e) => {
     e.preventDefault();
     props.history.push('/payment');
-    dispatch(saveShippingAddress({ apelido, fullName, id_usuario, address, city, postalCode, state, numero, bairro }));
+    dispatch(saveShippingAddress({ apelido, id_usuario, address, city, postalCode, state, numero, bairro }));
     dispatch(registerAddress(apelido, id_usuario, address, city, postalCode, state, numero, bairro, token));
   }
 
@@ -47,16 +46,6 @@ export default function ShippingAddressScreen(props) {
       <form className="form" onSubmit={submitHandler}>
         <div>
           <h1>Endereço de Envio</h1>
-        </div>
-        <div>
-          <label htmlFor="fullName">Nome Completo</label>
-          <input
-            type="text"
-            id="fullName"
-            placeholder="Entre com seu nome completo"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)} required
-          />
         </div>
         <div>
           <label htmlFor="apelido">Maneira de identificar o endereço</label>

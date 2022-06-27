@@ -19,6 +19,7 @@ import {
 import { CART_SAVE_SHIPPING_ADDRESS } from "../constants/cartConstants";
 
 export const registerAddress = (apelido, id, address, city, postalCode, state, numero, bairro, token) => async (dispatch) => {
+  console.log(token)
   dispatch({ type: END_REGISTER_REQUEST, payload: { apelido, id, address, city, postalCode, state, numero, bairro } });
   try {
     const { data } = await Axios.post('/api/address/cadastrar', {
@@ -39,7 +40,6 @@ export const registerAddress = (apelido, id, address, city, postalCode, state, n
           : error.message,
     });
   }
-
   dispatch({ type: END_REQUEST, payload: id });
   try {
     const { data } = await Axios.get(`/api/address/apelido/${apelido}`, {

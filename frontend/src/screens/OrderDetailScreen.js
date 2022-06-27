@@ -24,15 +24,16 @@ export default function OrderDetailScreen(props) {
 
   const dispatch = useDispatch();
 
+  console.log(order);
   const changeStatusHandler = (e) => {
     e.preventDefault();
-    dispatch(changeOrderStatus(orderId, token, status, order.totalPrice, userInfo.id));
-    props.history.push('/adm/orders');
+    dispatch(changeOrderStatus(orderId, token, status, order[1][0].totalPrice, order[1][0].usuario.id));
+    props.history.push('/');
   }
 
   useEffect(() => {
     dispatch(detailsOrder(orderId, token));
-  }, [dispatch, orderId]);
+  }, [dispatch, orderId, token]);
 
   useEffect(() => {
     if (loading === false) {
@@ -71,7 +72,7 @@ export default function OrderDetailScreen(props) {
   }, [status]);
 
   useEffect(() => {
-    if (status === "DEVOLUÇÃO_PENDENTE") {
+    if (status === "DEVOLUCAO_PENDENTE") {
       setDevolver(true)
     }
   }, [status]);
