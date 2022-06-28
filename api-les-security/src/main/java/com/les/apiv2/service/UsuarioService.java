@@ -28,7 +28,7 @@ BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		return usuarioRepository.save(usuario);
 		}else {
-			throw new IllegalArgumentException ("A senha deve conter: Mais do que 6 caracteres;"
+			throw new IllegalArgumentException ("A senha deve conter: Mais do que 8 caracteres;"
 					+ "Letras maiúsculas e minúsculas;"
 					+ "Números;"
 					+ "Caracteres especiais.");
@@ -79,7 +79,7 @@ BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	}
 	
 	public static boolean senhaForte(String senha) {
-	    if (senha.length() < 6) return false;
+	    if (senha.length() < 8) return false;
 
 	    boolean achouNumero = false;
 	    boolean achouMaiuscula = false;
