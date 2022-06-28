@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.les.apiv2.entities.Cartao;
 import com.les.apiv2.entities.OrderDetail;
 import com.les.apiv2.entities.OrderStatus;
 import com.les.apiv2.entities.Pedido;
 import com.les.apiv2.entities.dto.PedidoDTO;
 import com.les.apiv2.entities.dto.PedidoRetornoDTO;
+import com.les.apiv2.repository.CartaoRepository;
 import com.les.apiv2.repository.OrderDetailRepository;
 import com.les.apiv2.repository.PedidoRepository;
 
@@ -24,19 +26,27 @@ public class PedidoService {
 	@Autowired
 	private OrderDetailRepository orderRepository;
 	
-		
+	@Autowired
+	private CartaoRepository cartaoRepository;
 	
 	@Transactional
-	public PedidoDTO insert(PedidoDTO dto) {
+	public PedidoDTO insert(PedidoDTO dto) throws IllegalArgumentException {
 	Pedido pedido = new Pedido(null, OrderStatus.PENDENTE, dto.getEndereco(), dto.getUsuario(), dto.getCartao(), dto.getTaxPrice(),dto.getTotalPrice(), dto.getOrderDetails());
 		
 	for(OrderDetail od : dto.getOrderDetails()) {
 		Optional<OrderDetail> orderDetail = orderRepository.findById(od.getId());
 		pedido.getOrderDetails().add(orderDetail.get());
 	}
-	
-	pedido = pedidoRep.save(pedido);
-	return new PedidoDTO(pedido);
+		if (dto.getCartao() == null) {
+			throw new IllegalArgumentException("Compra não autorizada!");
+		}else {
+		int id = dto.getCartao().getId();
+		Optional<Cartao> cartao = cartaoRepository.findById(id);
+		if (cartao.isEmpty())
+		dto.setCartao(cartao.get());
+		pedido = pedidoRep.save(pedido);
+		return new PedidoDTO(pedido);
+		}
 	}
 	
 	public PedidoRetornoDTO findOne (Integer id) {

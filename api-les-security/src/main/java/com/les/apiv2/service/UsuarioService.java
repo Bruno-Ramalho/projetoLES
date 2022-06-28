@@ -23,9 +23,16 @@ BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return list;
 	}
 	
-	public Usuario save (Usuario usuario) {
+	public Usuario save(Usuario usuario) throws IllegalArgumentException {
+		if(senhaForte(usuario.getPassword())) {
 		usuario.setPassword(encoder.encode(usuario.getPassword()));
 		return usuarioRepository.save(usuario);
+		}else {
+			throw new IllegalArgumentException ("A senha deve conter: Mais do que 6 caracteres;"
+					+ "Letras maiúsculas e minúsculas;"
+					+ "Números;"
+					+ "Caracteres especiais.");
+		}
 	}
 
 	public Usuario findOne(Integer id) {
@@ -46,9 +53,17 @@ BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	}
 	
 	public Usuario changePassword(Usuario usuario, Integer id) {
-		Usuario usu = findOne(id);
-			usu.setPassword(encoder.encode(usuario.getPassword()));
-		return usuarioRepository.save(usu);	
+		
+		if(senhaForte(usuario.getPassword())) {
+			Usuario usu = findOne(id);
+			usuario.setPassword(encoder.encode(usuario.getPassword()));
+			return usuarioRepository.save(usu);
+			}else {
+				throw new IllegalArgumentException ("A senha deve conter: Mais do que 6 caracteres;"
+						+ "Letras maiúsculas e minúsculas;"
+						+ "Números;"
+						+ "Caracteres especiais.");
+			}
 	}
 	
 	public Usuario inativar (Integer id) {
@@ -62,5 +77,25 @@ BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		usu.setAtivo(true);
 		return usuarioRepository.save(usu);
 	}
+	
+	public static boolean senhaForte(String senha) {
+	    if (senha.length() < 6) return false;
 
+	    boolean achouNumero = false;
+	    boolean achouMaiuscula = false;
+	    boolean achouMinuscula = false;
+	    boolean achouSimbolo = false;
+	    for (char c : senha.toCharArray()) {
+	         if (c >= '0' && c <= '9') {
+	             achouNumero = true;
+	         } else if (c >= 'A' && c <= 'Z') {
+	             achouMaiuscula = true;
+	         } else if (c >= 'a' && c <= 'z') {
+	             achouMinuscula = true;
+	         } else {
+	             achouSimbolo = true;
+	         }
+	    }
+	    return achouNumero && achouMaiuscula && achouMinuscula && achouSimbolo;
+	}
 }
